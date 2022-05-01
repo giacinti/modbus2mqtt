@@ -1,0 +1,19 @@
+#! /bin/sh
+
+. $(dirname $0)/modbus2mqtt.sh
+
+topic="$1"
+[ -z "${topic}" ] && usage "$0 <topic>"
+
+# GPS
+payload=""
+payload=$(add_payload "${payload}" timestamp 364 2 32bit_uint1234)
+payload=$(add_payload "${payload}" latitude 143 2 32bit_float4321)
+payload=$(add_payload "${payload}" longitude 145 2 32bit_float4321)
+payload=$(add_payload "${payload}" fix_time 147 16 ascii)
+payload=$(add_payload "${payload}" date_time 163 16 ascii)
+payload=$(add_payload "${payload}" speed 179 2 32bit_float4321)
+payload=$(add_payload "${payload}" sat_count 181 2 32bit_uint1234)
+payload=$(add_payload "${payload}" accuracy 183 2 32bit_float4321)
+mqtt_pub "${topic}" "${payload}"
+

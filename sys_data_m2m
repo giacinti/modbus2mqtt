@@ -1,0 +1,18 @@
+#! /bin/sh
+. $(dirname $0)/modbus2mqtt.sh
+
+topic="$1"
+[ -z "${topic}" ] && usage "$0 <topic>"
+
+# SYSTEM data
+payload=""
+payload=$(add_payload "${payload}" hostname 7 16 ascii)
+payload=$(add_payload "${payload}" operator 23 16 ascii)
+payload=$(add_payload "${payload}" serial_number 39 16 ascii)
+payload=$(add_payload "${payload}" mac_address 55 16 ascii)
+payload=$(add_payload "${payload}" router_name 71 16 ascii)
+payload=$(add_payload "${payload}" sim_slot 87 16 ascii)
+payload=$(add_payload "${payload}" net_reg_info 103 16 ascii)
+payload=$(add_payload "${payload}" net_type 119 16 ascii)
+payload=$(add_payload "${payload}" wan_ip 139 2 ip)
+mqtt_pub "${topic}" "${payload}"
