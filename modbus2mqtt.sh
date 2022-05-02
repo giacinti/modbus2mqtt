@@ -24,7 +24,7 @@ float_div_10 () {
 }
 
 ip_conv () {
-  echo $1 | sed -e 's/,/\./g'
+  echo "\"$(echo $1 | sed -e 's/,/\./g')\""
 }
 
 read_modbus () {
