@@ -6,7 +6,7 @@ init_script=/etc/init.d/${service_name}
 if $(${init_script} enabled); then
     :
 else
-    if [ ! -x ${init_script} ]; then
+    if [ ! -f ${init_script} ]; then
 	cp ${base_dir}/${service_name}.init ${init_script}
 	chmod +x ${init_script}
     fi
