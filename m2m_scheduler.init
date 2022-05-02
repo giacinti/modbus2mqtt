@@ -1,0 +1,28 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+USE_PROCD=1
+
+PROG=/root/modbus2mqtt/m2m_scheduler
+NAME=m2m_scheduler
+PIDCOUNT=1
+
+start_service() {
+        local pid_file="/var/run/${NAME}.${PIDCOUNT}.pid"
+
+        procd_open_instance
+        procd_set_param command "$PROG"
+
+        procd_set_param respawn
+
+        procd_set_param stdout 1 # forward stdout of the command to logd
+        procd_set_param pidfile $pid_file # write a pid file on instance start and remote it on stop
+        procd_close_instance
+}
+
+service_triggers()
+{
+        procd_add_reload_trigger "m2m_scheduler"
+}

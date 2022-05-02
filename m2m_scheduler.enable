@@ -1,0 +1,15 @@
+#! /bin/sh
+base_dir=$(dirname $0)
+service_name=m2m_scheduler
+init_script=/etc/init.d/${service_name}
+
+if $(${init_script} enabled); then
+    :
+else
+    if [ ! -x ${init_script} ]; then
+	cp ${base_dir}/${service_name}.init ${init_script}
+	chmod +x ${init_script}
+    fi
+    ${init_script} enable
+    ${init_script} start
+fi

@@ -2,35 +2,45 @@
 
 conf=$(dirname $0)/m2m.conf
 
-# setup - define variables
-i=0
-tmpconf=$(/bin/mktemp)
-cat ${conf} |grep -v "^#"|grep -v "^\s*$" > ${tmpconf}
-while read -r name period command; do
-  eval "mod_${i}=0"
-  eval "per_${i}=${period}"
-  eval "cmd_${i}=\"${command}\""
-  i=$(( $i + 1 ))
-done <${tmpconf}
-nb_services=${i}
-rm -f ${tmpconf}
+##############################################################################
+#
+main() {
+    # setup - define variables
+    i=0
+    tmpconf=$(/bin/mktemp)
+    cat ${conf} |grep -v "^#"|grep -v "^\s*$" > ${tmpconf}
+    while read -r name period command; do
+	eval "export mod_${i}=0"
+	eval "export per_${i}=${period}"
+	eval "export cmd_${i}=\"${command}\""
+	i=$(( $i + 1 ))
+    done <${tmpconf}
+    nb_services=${i}
+    rm -f ${tmpconf}
 
-# main loop
-while :; do
-  i=0
-  while [ $i -lt $nb_services ]; do
-    eval "mod=\${mod_${i}}"
-    eval "per=\${per_${i}}"
-    nmod=$(( $(date +'%s') % ${per} ))
-    if [ $(( $nmod - $mod )) -le 0 ]; then
-      eval "cmd=\"\${cmd_${i}}\""
-#      echo "$(date): starting \"${cmd}\""
-      eval "${cmd}&"
-      nmod=0
-    fi 
-    eval "mod_${i}=$nmod"
-    i=$(( $i + 1 ))
-  done
-  sleep 1
-done
+
+    # main loop
+    while :; do
+	i=0
+	while [ $i -lt $nb_services ]; do
+	    eval "mod=\${mod_${i}}"
+	    eval "per=\${per_${i}}"
+	    nmod=$(( $(date +'%s') % ${per} ))
+	    if [ $(( $nmod - $mod )) -le 0 ]; then
+		eval "cmd=\"\${cmd_${i}}\""
+		[ -n "${DEBUG}" ] && echo "$(date): starting \"${cmd}\""
+		eval "${cmd}&"
+		nmod=0
+	    fi 
+	    eval "mod_${i}=$nmod"
+	    i=$(( $i + 1 ))
+	done
+	sleep 1
+    done
+}
+
+##############################################################################
+main
+
+
 
