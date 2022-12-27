@@ -6,7 +6,7 @@ topic="$1"
 
 # SYSTEM sensors
 payload=""
-payload=$(add_payload "${payload}" uptime 1 2 32bit_uint1234)
-payload=$(add_payload "${payload}" mobile_signal_strength 3 2 32bit_int1234)
-payload=$(add_payload "${payload}" temperature 5 2 temp)
+payload=$(add_payload "${payload}" uptime 2 2 32bit_uint1234)
+payload=$(add_payload "${payload}" mobile_signal_strength 4 2 32bit_int1234)
+payload=$(add_payload "${payload}" temperature 6 2 temp)
 mqtt_pub "${topic}" "${payload}"

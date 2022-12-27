@@ -6,13 +6,13 @@ topic="$1"
 
 # SYSTEM data
 payload=""
-payload=$(add_payload "${payload}" hostname 7 16 ascii)
-payload=$(add_payload "${payload}" operator 23 16 ascii)
-payload=$(add_payload "${payload}" serial_number 39 16 ascii)
-payload=$(add_payload "${payload}" mac_address 55 16 ascii)
-payload=$(add_payload "${payload}" router_name 71 16 ascii)
-payload=$(add_payload "${payload}" sim_slot 87 16 ascii)
-payload=$(add_payload "${payload}" net_reg_info 103 16 ascii)
-payload=$(add_payload "${payload}" net_type 119 16 ascii)
-payload=$(add_payload "${payload}" wan_ip 139 2 ip)
+payload=$(add_payload "${payload}" hostname 8 16 ascii)
+payload=$(add_payload "${payload}" operator 24 16 operator)
+payload=$(add_payload "${payload}" serial_number 40 16 ascii)
+payload=$(add_payload "${payload}" mac_address 56 16 ascii)
+payload=$(add_payload "${payload}" router_name 72 16 ascii)
+payload=$(add_payload "${payload}" sim_slot 88 16 ascii)
+payload=$(add_payload "${payload}" net_reg_info 104 16 ascii)
+payload=$(add_payload "${payload}" net_type 120 16 ascii)
+payload=$(add_payload "${payload}" wan_ip 140 2 ip)
 mqtt_pub "${topic}" "${payload}"
